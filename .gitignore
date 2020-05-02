@@ -5,8 +5,8 @@
 data/*
 !data/NOTES.md
 
-dependencies/*
-!dependencies/NOTES.md
+models/*
+!models/NOTES.md
 
 #===============================================================================
 # Jupyter Notebook Ignore
