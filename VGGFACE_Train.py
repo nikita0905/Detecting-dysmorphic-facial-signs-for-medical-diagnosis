@@ -3,14 +3,13 @@
 
 # In[1]:
 
-
+import sys
+import os
 from keras import models
 from keras import layers
 from keras import optimizers
 from keras.applications import VGG16
 from keras.applications import InceptionResNetV2
-import sys
-import os
 from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 from keras.models import Sequential
@@ -45,8 +44,7 @@ img_width, img_height = 224, 224
 weights_path = 'keras-facenet/weights/facenet_keras_weights.h5'
 top_model_weights_path = 'keras-facenet/model/facenet_keras.h5'
 
-#nb_train_samples = 1774
-#nb_validation_samples = 313
+
 epochs = 50
 batch_size = 16
 
@@ -63,8 +61,6 @@ test_data_path = 'Test'
 img_width, img_height = 224, 224
 
 #Load the VGG model
-#vgg_conv = VGG16(weights='imagenet', include_top=False, input_shape=(img_width, img_height, 3))
-
 vggface = VGGFace(model='resnet50', include_top=False, input_shape=(img_width, img_height, 3))
 vggface.summary()
 #vgg_model = VGGFace(include_top=False, input_shape=(224, 224, 3))
@@ -72,42 +68,35 @@ vggface.summary()
 
 # In[4]:
 
-
+# Changing the layer layers
 last_layer = vggface.get_layer('avg_pool').output
-x = Flatten(name='flatten')(last_layer)
-xx = Dense(256, activation = 'relu')(x)
-x1 = BatchNormalization()(xx)
-x2 = Dropout(0.5)(x1)
+flattened_layer = Flatten(name='flatten')(last_layer)
+densed_layer = Dense(256, activation = 'relu')(flattened_layer)
+normalized_layer = BatchNormalization()(densed_layer)
+dropout_layer = Dropout(0.5)(normalized_layer)
 
-y = Dense(256, activation = 'relu')(x2)
-yy = BatchNormalization()(y)
-y1 = Dropout(0.5)(yy)
+densed_layer1 = Dense(256, activation = 'relu')(dropout_layer)
+normalized_layer1 = BatchNormalization()(densed_layer1)
+dropout_layer1 = Dropout(0.5)(normalized_layer1)
 
-z = Dense(256, activation = 'relu')(y1)
-zz = BatchNormalization()(z)
-z1 = Dropout(0.5)(zz)
+densed_layer2 = Dense(256, activation = 'relu')(dropout_layer1)
+normalized_layer2 = BatchNormalization()(densed_layer2)
+dropout_layer2 = Dropout(0.5)(normalized_layer2)
 
-x3 = Dense(12, activation='softmax', name='classifier')(z1)
+densed_layer3 = Dense(12, activation='softmax', name='classifier')(dropout_layer2)
 
-custom_vgg_model = Model(vggface.input, x3)
+custom_vgg_model = Model(vggface.input, densed_layer3)
 
 
-# Create the model
+# Create the model and add the convolutional base model
 model = models.Sequential()
- 
-# Add the convolutional base model
 model.add(custom_vgg_model)
 
 
 # In[5]:
 
-
+# Calculate precision and recall
 def precision(y_true, y_pred):
-    """Precision metric.
-    Only computes a batch-wise average of precision.
-    Computes the precision, a metric for multi-label classification of
-    how many selected items are relevant.
-    """
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
     predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
     precision = true_positives / (predicted_positives + K.epsilon())
@@ -115,57 +104,15 @@ def precision(y_true, y_pred):
 
 
 def recall(y_true, y_pred):
-    """Recall metric.
-    Only computes a batch-wise average of recall.
-    Computes the recall, a metric for multi-label classification of
-    how many relevant items are selected.
-    """
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
     possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
     recall = true_positives / (possible_positives + K.epsilon())
     return recall
 
 
+
+
 # In[6]:
-
-
-def fbeta_score(y_true, y_pred, beta=1):
-    """Computes the F score.
-    The F score is the weighted harmonic mean of precision and recall.
-    Here it is only computed as a batch-wise average, not globally.
-    This is useful for multi-label classification, where input samples can be
-    classified as sets of labels. By only using accuracy (precision) a model
-    would achieve a perfect score by simply assigning every class to every
-    input. In order to avoid this, a metric should penalize incorrect class
-    assignments as well (recall). The F-beta score (ranged from 0.0 to 1.0)
-    computes this, as a weighted mean of the proportion of correct class
-    assignments vs. the proportion of incorrect class assignments.
-    With beta = 1, this is equivalent to a F-measure. With beta < 1, assigning
-    correct classes becomes more important, and with beta > 1 the metric is
-    instead weighted towards penalizing incorrect class assignments.
-    """
-    if beta < 0:
-        raise ValueError('The lowest choosable beta is zero (only precision).')
-
-    # If there are no true positives, fix the F score at 0 like sklearn.
-    if K.sum(K.round(K.clip(y_true, 0, 1))) == 0:
-        return 0
-
-    p = precision(y_true, y_pred)
-    r = recall(y_true, y_pred)
-    bb = beta ** 2
-    fbeta_score = (1 + bb) * (p * r) / (bb * p + r + K.epsilon())
-    return fbeta_score
-
-
-def fmeasure(y_true, y_pred):
-    """Computes the f-measure, the harmonic mean of precision and recall.
-    Here it is only computed as a batch-wise average, not globally.
-    """
-    return fbeta_score(y_true, y_pred, beta=1)
-
-
-# In[7]:
 
 
 train_datagen = ImageDataGenerator(
@@ -186,7 +133,7 @@ validation_datagen = ImageDataGenerator(
       fill_mode='nearest')
 
 
-# In[8]:
+# In[7]:
 
 
 train_batchsize = 32
@@ -205,7 +152,7 @@ validation_generator = validation_datagen.flow_from_directory(
         class_mode='categorical')
 
 
-# In[9]:
+# In[8]:
 
 
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1,
@@ -230,10 +177,3 @@ history = model.fit_generator(
  
 # Save the model
 model.save('keras_vggface_3FC_cropped_300.h5')
-
-
-# In[ ]:
-
-
-
-
