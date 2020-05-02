@@ -69,12 +69,9 @@ Python dependencies. Install via `pip`.
 - matplotlib
 
 ### Code
-The following Jupyter Notebook was developed to train the model.
-- [VGGFACE](./VGGFACE.ipynb)
-
-The following python scripts were developed in addition to the above notebook.
-- [test_code](./test_code.py)
-- [VGGFACE_code](./VGGFACE_code.py)
+The following python scripts were developed.
+- [VGGFACE_Test](./VGGFACE_Test.py)
+- [VGGFACE_Train](./VGGFACE_Train.py)
 
 
 
