@@ -3,7 +3,8 @@
 
 # In[ ]:
 
-
+import sys
+import os
 from keras.models import load_model
 from sklearn.metrics import confusion_matrix
 import numpy as np
@@ -13,8 +14,6 @@ from keras import layers
 from keras import optimizers
 from keras.applications import VGG16
 from keras.applications import InceptionResNetV2
-import sys
-import os
 from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 from keras.models import Sequential
@@ -87,19 +86,7 @@ for i in range(len(errors)):
         predictions[errors[i]][pred_class])
      
     original = image.load_img('{}/{}'.format(test_data_path,fnames[errors[i]]))
-    #plt.figure(figsize=[7,7])
-    #plt.axis('off')
-    #plt.title(title)
-    #plt.imshow(original)
-    #plt.show()
 
 
 cm = confusion_matrix(ground_truth, predicted_classes)
 print(cm)
-
-
-# In[ ]:
-
-
-
-
