@@ -53,7 +53,7 @@ Python dependencies. Install via `pip`.
 ### Code
 The following Jupyter Notebook makes use of the feature vector dataset extracted from our image dataset. Follow [OpenFace's tutorial](https://cmusatyalab.github.io/openface/demo-3-classifier/) up through the representation file generation. Copy these files into the `data` directory in this repo following the convention detailed in the directory [notes](./data/NOTES.md).
 
-- [Openface-Feature-Models](OpenFace-Feature-Models.ipynb)
+- [Openface-Feature-Models](Openface-Feature-Models.ipynb)
 
 
 ## VGGFace Transfer Learning Classifier
