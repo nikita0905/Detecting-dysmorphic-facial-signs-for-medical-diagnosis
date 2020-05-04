@@ -167,4 +167,4 @@ history = model.fit_generator(
       callbacks=[reduce_lr, checkpoint])
  
 # Save the model
-model.save('keras_vggface_3FC_cropped_300.h5')
+model.save('keras_vggface_200.h5')
