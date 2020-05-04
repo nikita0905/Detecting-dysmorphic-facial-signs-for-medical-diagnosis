@@ -29,7 +29,7 @@ Python dependencies. Install via `pip`.
 ### Code
 The following Jupyter Notebooks address these approachs:
 
-- [Keypoint-Cloud-Classifier---Absoluate-Normal-Distance](./Keypoint-Cloud-Classifier---Absoluate-Normal-Distance.ipynb)
+- [Keypoint-Cloud-Classifier---Absoluate-Normal-Distance](./Keypoint-Cloud-Classifier---Absolute-Normal-Distance.ipynb)
 - [Keypoint-Cloud-Classifier---Relative-Distance](./Keypoint-Cloud-Classifier---Relative-Distance.ipynb)
 
 
