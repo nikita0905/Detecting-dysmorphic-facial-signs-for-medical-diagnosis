@@ -74,18 +74,9 @@ flattened_layer = Flatten(name='flatten')(last_layer)
 densed_layer = Dense(256, activation = 'relu')(flattened_layer)
 normalized_layer = BatchNormalization()(densed_layer)
 dropout_layer = Dropout(0.5)(normalized_layer)
+densed_layer = Dense(12, activation='softmax', name='classifier')(dropout_layer)
 
-densed_layer1 = Dense(256, activation = 'relu')(dropout_layer)
-normalized_layer1 = BatchNormalization()(densed_layer1)
-dropout_layer1 = Dropout(0.5)(normalized_layer1)
-
-densed_layer2 = Dense(256, activation = 'relu')(dropout_layer1)
-normalized_layer2 = BatchNormalization()(densed_layer2)
-dropout_layer2 = Dropout(0.5)(normalized_layer2)
-
-densed_layer3 = Dense(12, activation='softmax', name='classifier')(dropout_layer2)
-
-custom_vgg_model = Model(vggface.input, densed_layer3)
+custom_vgg_model = Model(vggface.input, densed_layer)
 
 
 # Create the model and add the convolutional base model
