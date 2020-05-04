@@ -75,7 +75,8 @@ The following python scripts were developed.
 
 
 
-# Additional work not presented in writeup
+# Additional Work
+The following is work not presented directly in the webpage writeup. These files are one-offs or incomplete attempts during classifier development.
 - [Keypoint-Image-Classifier](./Keypoint-Image-Classifier.ipynb)
   - Attempt at a network trained from scratch.
   - This was / is not complete nor functional.
