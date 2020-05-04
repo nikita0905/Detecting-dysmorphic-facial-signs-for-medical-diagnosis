@@ -34,7 +34,7 @@ from keras.models import load_model
 from sklearn import metrics
 import numpy
 
-model = load_model('keras_vggface_3FC_cropped_300.h5')
+model = load_model('keras_vggface_200.h5')
 test_data_path = 'Test'
 
 
